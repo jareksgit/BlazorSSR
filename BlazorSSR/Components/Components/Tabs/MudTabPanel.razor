@@ -1,0 +1,89 @@
+﻿@namespace MudBlazor
+@inherits MudComponentBase
+@implements IDisposable
+
+
+@if (Parent?.KeepPanelsAlive==true)
+{
+    <div style="display:@(Parent?.ActivePanel == this ? "contents" : "none")">
+        @ChildContent
+    </div>
+}
+else
+{
+    @if (Parent?.ActivePanel == this)
+    {
+        @ChildContent
+    }
+}
+
+@code {
+
+    [CascadingParameter] private MudTabs Parent { get; set; }
+
+    public ElementReference PanelRef;
+
+
+    /// <summary>
+    /// Text will be displayed in the TabPanel as TabTitle.
+    /// </summary>
+    [Parameter] public string Text { get; set; }
+
+    /// <summary>
+    /// Icon placed before the text if set.
+    /// </summary>
+    [Parameter] public string Icon { get; set; }
+
+    /// <summary>
+    /// If true, the tabpanel will be disabled.
+    /// </summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// Optional information to be showed into a badge
+    /// </summary>
+    [Parameter] public object BadgeData { get; set; }
+
+    /// <summary>
+    /// The color of the badge.
+    /// </summary>
+    [Parameter] public Color BadgeColor { get; set; } = Color.Primary;
+
+    /// <summary>
+    /// Unique TabPanel ID. Usefull for actvation when Panels are dynamically generated.
+    /// </summary>
+    [Parameter] public object ID { get; set; }
+
+    /// <summary>
+    /// Raised when tab is clicked
+    /// </summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>
+    /// Child content of component.
+    /// </summary>
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    /// <summary>
+    /// TabPanel Tooltip
+    /// </summary>
+    [Parameter] public string ToolTip { get; set; }
+
+    protected override void OnInitialized()
+    {
+        // NOTE: we must not throw here because we need the component to be able to live for the API docs to be able to infer default values
+        //if (Parent == null)
+        //    throw new ArgumentNullException(nameof(Parent), "TabPanel must exist within a Tabs component");
+        base.OnInitialized();
+        Parent?.AddPanel(this);
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            Parent?.RemovePanel(this);
+        }
+        catch { }
+    }
+}

@@ -1,0 +1,83 @@
+﻿@namespace MudBlazor
+@inherits MudTableBase
+@using MudBlazor.Extensions
+@using MudBlazor.Utilities
+@typeparam T
+
+<div @attributes="UserAttributes" class="@Classname" style="@Style">
+    <CascadingValue Value="TableContext" IsFixed="true">
+        @if (ToolBarContent != null)
+        {
+            <MudToolBar Class="mud-table-toolbar">
+                @ToolBarContent
+            </MudToolBar>
+        }
+        @if (Context.SortLabels.Any())
+        {
+            <div Class="mud-table-smalldevices-sortselect">
+                <MudSelect Value="@Context.CurrentSortLabel" Label="@SortLabel" ValueChanged="@(v => Context.SetSortFunc(v, override_direction_none:true))" T="MudTableSortLabel<T>">
+                    @foreach (var label in Context.SortLabels)
+                    {
+                        <MudSelectItem Value="@label">@label.ChildContent</MudSelectItem>
+                    }
+                </MudSelect>
+            </div>
+
+        }
+        <div class="mud-table-container" style="@TableStyle">
+            <table class="mud-table-root">
+                @if (ColGroup != null)
+                {
+                    <colgroup>
+                        @ColGroup
+                    </colgroup>
+                }
+                @if (HeaderContent != null)
+                {
+                    <thead class="mud-table-head">
+                        <MudTr IsHeader="true" IsCheckable="MultiSelection" IsEditable="RowEditingTemplate != null" IsCheckedChanged="@OnHeaderCheckboxClicked" @ref="TableContext.HeaderRow">
+                            @HeaderContent
+                        </MudTr>
+                    </thead>
+                }
+                <tbody class="mud-table-body">
+                    @if (CurrentPageItems != null)
+                    {
+                        var rowIndex = 0;
+                        @foreach (var item in CurrentPageItems)
+                        {
+                            var rowClass = new CssBuilder(RowClass).AddClass(RowClassFunc?.Invoke(item, rowIndex)).Build();
+                            var rowStyle = new StyleBuilder().AddStyle(RowStyle).AddStyle(RowStyleFunc?.Invoke(item, rowIndex)).Build();
+                            <MudTr Class="@rowClass" Style="@rowStyle" Item="item" @key="item" IsCheckable="MultiSelection" IsEditable="RowEditingTemplate != null" 
+                                   IsCheckedChanged="@((value) => { var x = item; OnRowCheckboxChanged(value, x); })">
+                                @if ((!ReadOnly) && RowEditingTemplate != null && object.Equals(_editingItem, item))
+                                { 
+                                    <CascadingValue Value="@Validator" IsFixed="true">
+                                        @RowEditingTemplate(item)
+                                    </CascadingValue>
+                                }
+                                else
+                                {
+                                    @RowTemplate(item)
+                                }
+                            </MudTr>
+                            @if (ChildRowContent != null)
+                            {
+                                @ChildRowContent(item)
+                            }
+                            rowIndex++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (PagerContent != null)
+        {
+            <div class="mud-table-pagination">
+                @PagerContent
+            </div>
+        }
+    </CascadingValue>
+</div>
+
+

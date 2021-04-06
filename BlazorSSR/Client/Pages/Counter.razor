@@ -1,0 +1,29 @@
+@page "/counter"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<MudText Typo="Typo.h6">MudBlazor is @Text</MudText>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ButtonOnClick">@ButtonText</MudButton>
+
+@code {
+    private int currentCount = 0;
+    private string Text { get; set; } = "????";
+    private string ButtonText { get; set; } = "Click Me";
+    private int ButtonClicked { get; set; }
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private void ButtonOnClick()
+    {
+        ButtonClicked += 1;
+        Text = $"Awesome x {ButtonClicked}";
+        ButtonText = "Click Me Again";
+    }
+}

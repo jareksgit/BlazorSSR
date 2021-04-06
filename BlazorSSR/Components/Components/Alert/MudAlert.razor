@@ -1,0 +1,15 @@
+﻿@namespace MudBlazor
+
+@inherits MudComponentBase
+
+<div @attributes="UserAttributes" class="@Classname" Style="@Style" @onclick="OnClick" >
+    @if (!NoIcon)
+    {
+        <div class="mud-alert-icon">
+            <MudIcon Icon="@_icon" />
+        </div>
+    }
+    <div class="mud-alert-message">
+        @ChildContent
+    </div>
+</div>

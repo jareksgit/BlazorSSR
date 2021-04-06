@@ -1,0 +1,34 @@
+﻿@namespace MudBlazor
+@inherits MudComponentBase
+
+
+
+
+<div @attributes="UserAttributes" class="@Classname" style="@Style">
+    @InputContent
+    @if (!String.IsNullOrEmpty(Label))
+    {
+        <MudInputLabel Class="mud-input-label-inputcontrol" Variant="@Variant" Disabled=@Disabled Error="@Error" Margin="@Margin">
+            @Label
+        </MudInputLabel>
+    }
+    @if (!String.IsNullOrEmpty(HelperText))
+    {
+        <p class="@HelperClass">
+            @if (Error)
+            {
+                @ErrorText
+            }
+            else
+            {
+                @HelperText
+            }
+        </p>
+    }
+    else if (String.IsNullOrEmpty(HelperText) && Error)
+    {
+        <p class="@HelperClass">@ErrorText</p>
+    }
+    @ChildContent
+</div>
+

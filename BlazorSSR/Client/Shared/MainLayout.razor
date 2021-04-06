@@ -1,0 +1,35 @@
+﻿@using BlazorSSR.Client.Services
+@inherits LayoutComponentBase
+
+<MudLayout>
+    <MudAppBar Elevation="25">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
+        <MudAppBarSpacer />
+        <MudAutocomplete T="ApiLinkServiceEntry" Placeholder="Search" SearchFunc="Search" Variant="Variant.Outlined" ValueChanged="OnSearchResult" Class="docs-search-bar">
+            <ItemTemplate Context="result">
+                <MudText>@result.Title</MudText> <MudText Typo="Typo.body2">@result.SubTitle</MudText>
+            </ItemTemplate>
+        </MudAutocomplete>
+        <MudAppBarSpacer />
+        <AuthorizeView>
+            <Authorized>
+                <MudText Color="Color.Inherit">@context.User.Identity.Name</MudText>
+                <MudButton Variant="Variant.Text" Color="Color.Inherit" @onclick="BeginSignOut">Logout</MudButton>
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Variant="Variant.Text" Color="Color.Secondary" Link="register">Register</MudButton>
+                <MudButton Variant="Variant.Text" Color="Color.Inherit" @onclick="@((e) => OpenLoginDialog(dialogMaxWidth))">Login</MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        @*NavMenu*@
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        @*Body*@
+        @Body
+    </MudMainContent>
+</MudLayout>

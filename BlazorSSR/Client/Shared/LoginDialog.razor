@@ -1,0 +1,25 @@
+﻿<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Login" Class="mr-3 mb-n1" />
+            Login
+        </MudText>
+        <NavLink href="register">
+            <h6 class="font-weight-normal text-center">Create account</h6>
+        </NavLink>
+        @if ( string.IsNullOrEmpty(error) )
+        {
+            <label class="text-danger">@error</label>
+        }
+    </TitleContent>
+    <DialogContent>
+        <EditForm Model="@loginModel" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <MudTextField Label="Email" Class="mt-3"
+                          @bind-Value="loginModel.Email" For="@(() => loginModel.Email)" />
+            <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                          @bind-Value="loginModel.Password" For="@(() => loginModel.Password)" InputType="InputType.Password" />
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Login</MudButton>
+        </EditForm>
+    </DialogContent>
+</MudDialog>

@@ -1,0 +1,43 @@
+﻿@namespace MudBlazor
+@implements IDisposable
+@inherits MudComponentBase
+
+<tr class="@Classname" @onclick="@OnRowClicked" style="@Style" @attributes="@UserAttributes">
+    @if (IsCheckable)
+    {
+        if (IsHeader)
+        {
+            <MudTh>
+                <MudCheckBox @bind-Checked="IsChecked"></MudCheckBox>
+            </MudTh>
+        }
+        else
+        {
+            <MudTd>
+                <MudCheckBox @bind-Checked="IsChecked"></MudCheckBox>
+            </MudTd>
+        }
+    }
+    @ChildContent
+    @if(IsEditable)
+    {
+        if (IsHeader)
+        {
+            <MudTh />
+        }
+        else
+        {
+            @* Add datalabel as a placeholder to avoid jumps on small viewports *@
+            <MudTd DataLabel="&nbsp;">
+                @if (object.ReferenceEquals(Context?.Table._editingItem, Item) && (!Context?.Table.ReadOnly ?? false))
+                {
+                    <MudTooltip Text="@Context.Table.CommitEditTooltip">
+                        <MudIconButton Class="pa-0" Icon="@Icons.Material.Filled.Done" OnClick="FinishEdit" Size="@Size.Small" Disabled="@(!Context?.Table.Validator?.IsValid ?? false)" />
+                    </MudTooltip>
+                }
+            </MudTd>
+        }
+    }
+</tr>
+
+

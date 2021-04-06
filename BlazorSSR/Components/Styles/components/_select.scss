@@ -1,0 +1,34 @@
+﻿.mud-select {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+
+    &.mud-autocomplete {
+        display: block;
+
+        & .mud-select-input {
+            cursor: text;
+        }
+
+        & .mud-input-adornment {
+            cursor: pointer;
+        }
+    }
+}
+
+.mud-select-input {
+    cursor: pointer;
+
+    &:disabled {
+        cursor: default;
+    }
+}
+
+.mud-select > .mud-form-helpertext {
+    margin-top: -21px;
+}
+
+.mud-selected-item {
+    color: var(--mud-palette-primary);
+    background-color: var(--mud-palette-primary-hover);
+}

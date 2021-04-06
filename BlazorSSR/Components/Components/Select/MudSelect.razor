@@ -1,0 +1,31 @@
+﻿@namespace MudBlazor
+@typeparam T
+@inherits MudBaseInput<T>
+
+<CascadingValue Name="Standalone" Value="false" IsFixed="true">
+    <div class="mud-select">
+        <MudInputControl Label="@Label" Variant="@Variant" HelperText="@HelperText" FullWidth="@FullWidth" Margin="@Margin" Class="@Classname" Style="@Style"
+                         Error="@Error" ErrorText="@ErrorText" Disabled="@Disabled" @onclick="@ToggleMenu" Required="@Required">
+            <InputContent>
+                <MudInput @ref="_elementReference" Variant="@Variant" Value="@(Strict && !IsValueInList ? null : Text)" DisableUnderLine="@DisableUnderLine" Disabled=@Disabled ReadOnly="true"
+                          Class="mud-select-input" Error="@Error" AdornmentIcon="@CurrentIcon" Adornment="Adornment.End" IconSize="Size.Medium" Margin="@Margin"
+                          InputType="@(CanRenderValue || (Strict && !IsValueInList) ? InputType.Hidden : InputType.Text)">
+                    @if (CanRenderValue)
+                    {
+                        @GetSelectedValuePresenter()
+                    }
+                </MudInput>
+            </InputContent>
+        </MudInputControl>
+        <CascadingValue Value="@((IMudSelect)this)" IsFixed="true">
+            <MudPopover Open="@_isOpen" MaxHeight="@MaxHeight" Direction="@Direction" OffsetX="@OffsetX" OffsetY="@OffsetY">
+                <MudList Clickable="true" Dense="@Dense">
+                    @ChildContent
+                </MudList>
+            </MudPopover>
+        </CascadingValue>
+    </div>
+</CascadingValue>
+
+<MudOverlay Visible="_isOpen" OnClick="@CloseMenu" LockScroll="false" />
+

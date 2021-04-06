@@ -1,0 +1,10 @@
+﻿namespace BlazorSSR.Client.Models
+{
+    public class ApiProperty
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Description { get; set; }
+        public object Default { get; set; }
+    }
+}

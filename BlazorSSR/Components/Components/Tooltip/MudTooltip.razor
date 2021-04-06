@@ -1,0 +1,19 @@
+﻿@namespace MudBlazor
+@inherits MudComponentBase
+
+<div class="mud-tooltip-root">
+    @ChildContent
+    @if (!String.IsNullOrEmpty(Text) || TooltipContent != null)
+    {
+        <div class="@Classname" style="@GetTimeDelay()">
+            @if (TooltipContent != null)
+            {
+                @TooltipContent
+            }
+            else
+            {
+                @Text
+            }
+        </div>
+    }
+</div>
